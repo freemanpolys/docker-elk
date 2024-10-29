@@ -104,6 +104,21 @@ services:
       - elasticsearch
     restart: unless-stopped
 
+  apm-server:
+    image: docker.elastic.co/apm/apm-server:7.17.25
+    ports:
+      - "8200:8200"
+    environment:
+        ELASTICSEARCH_HOST:  http://elasticsearch:9200
+        ELASTICSEARCH_USERNAME: elastic
+        ELASTICSEARCH_PASSWORD: ${ELASTIC_PASSWORD:-}
+        KIBANA_HOST: http://kibana:5601
+    networks:
+      - elk
+    depends_on:
+      - elasticsearch
+    restart: unless-stopped
+
 networks:
   elk:
     driver: bridge
